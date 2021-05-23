@@ -35,7 +35,7 @@ model = torch.load(opt.model, map_location=lambda storage, loc: storage)["model"
 scales = [4]
 
 # image_list = glob.glob(opt.dataset+"/*.*") 
-image_list = list(opt.dataset)
+image_list = opt.dataset
 
 for scale in scales:
     avg_psnr_predicted = 0.0
