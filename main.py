@@ -91,7 +91,7 @@ def main():
     print("===> Training")
     for epoch in range(opt.start_epoch, opt.nEpochs + 1):
         train(training_data_loader, optimizer, model, criterion, epoch)
-        save_checkpoint(model, epoch)
+        save_checkpoint(model, epoch, optimizer)
 
 def adjust_learning_rate(optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 10 epochs"""
@@ -118,15 +118,15 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
         loss = criterion(model(input), target)
         optimizer.zero_grad()
         loss.backward() 
-        nn.utils.clip_grad_norm(model.parameters(),opt.clip) 
+        nn.utils.clip_grad_norm_(model.parameters(), opt.clip)
         optimizer.step()
 
         if iteration%100 == 0:
-            print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.data[0]))
+            print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
-def save_checkpoint(model, epoch):
+def save_checkpoint(model, epoch, optimizer):
     model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)
-    state = {"epoch": epoch ,"model": model}
+    state = {"epoch": epoch ,"model": model, "model_state_dict":model.state_dict(), "optimizer_state_dict":optimizer.state_dict()}
     if not os.path.exists("checkpoint/"):
         os.makedirs("checkpoint/")
 
