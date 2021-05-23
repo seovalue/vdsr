@@ -14,6 +14,7 @@ from datasets import get_training_data_loader
 parser = argparse.ArgumentParser(description="PyTorch VDSR")
 parser.add_argument("--dataRoot", type=str)
 parser.add_argument("--featureType", type=str)
+parser.add_argument("--scaleFactor", type=int, default=4)
 parser.add_argument("--batchSize", type=int, default=64, help="Training batch size")
 parser.add_argument("--nEpochs", type=int, default=20, help="Number of epochs to train for")
 parser.add_argument("--lr", type=float, default=0.1, help="Learning Rate. Default=0.1")
