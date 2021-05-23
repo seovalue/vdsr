@@ -68,7 +68,7 @@ for scale in scales:
 
         if cuda:
             model = model.cuda()
-            im_input = im_input.cuda()
+            f_input = f_input.cuda()
         else:
             model = model.cpu()
 
