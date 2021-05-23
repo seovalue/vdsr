@@ -82,6 +82,7 @@ def main():
         if os.path.isfile(opt.pretrained):
             print("=> loading model '{}'".format(opt.pretrained))
             weights = torch.load(opt.pretrained)
+            opt.start_epoch = weights["epoch"] + 1
             model.load_state_dict(weights['model'].state_dict())
         else:
             print("=> no model found at '{}'".format(opt.pretrained))  
