@@ -49,7 +49,6 @@ for scale in scales:
     count = 0.0
     for image_name in image_list:
         count += 1
-        print("Processing ", image_name)
         f_gt = image_name
         w, h = image_name.size 
         f_bi = image_name.resize((w//scale,h//scale), Image.BICUBIC)
@@ -91,6 +90,5 @@ for scale in scales:
 
     print("Scale=", scale)
     print("Dataset=", opt.dataset)
-    print("PSNR_predicted=", avg_psnr_predicted/count)
-    print("PSNR_bicubic=", avg_psnr_bicubic/count)
-    print("It takes average {}s for processing".format(avg_elapsed_time/count))
+    print("Average PSNR_predicted=", avg_psnr_predicted/count)
+    print("Average PSNR_bicubic=", avg_psnr_bicubic/count)
