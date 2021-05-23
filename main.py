@@ -9,6 +9,7 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from vdsr import Net
 from datasets import get_training_data_loader
+import numpy as np
 
 # Training settings
 parser = argparse.ArgumentParser(description="PyTorch VDSR")
@@ -98,6 +99,10 @@ def adjust_learning_rate(optimizer, epoch):
     lr = opt.lr * (0.1 ** (epoch // opt.step))
     return lr
 
+def PSNR(loss):
+    psnr = 10 * np.log10(1 / (loss + 1e-10))
+    return psnr
+
 def train(training_data_loader, optimizer, model, criterion, epoch):
     lr = adjust_learning_rate(optimizer, epoch-1)
 
@@ -110,19 +115,23 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
 
     for iteration, batch in enumerate(training_data_loader, 1):
         input, target = Variable(batch[0]), Variable(batch[1], requires_grad=False)
-
+        total_loss = 0
         if opt.cuda:
             input = input.cuda()
             target = target.cuda()
 
         loss = criterion(model(input), target)
         optimizer.zero_grad()
+        total_loss += loss.item()
         loss.backward() 
         nn.utils.clip_grad_norm_(model.parameters(), opt.clip)
         optimizer.step()
 
-        if iteration%100 == 0:
-            print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
+    epoch_loss = total_loss / len(training_data_loader)
+    psnr = PSNR(epoch_loss)
+    print("===> Epoch[{}]: loss : {:.10f} ,PSNR : {:.10f}".format(epoch, epoch_loss, psnr))
+        # if iteration%100 == 0:
+        #     print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
 def save_checkpoint(model, epoch, optimizer):
     model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)
