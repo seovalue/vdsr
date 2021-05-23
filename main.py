@@ -59,7 +59,7 @@ def main():
 
     print("===> Building model")
     model = Net()
-    criterion = nn.MSELoss(size_average=False)
+    criterion = nn.MSELoss(reduction='sum')
 
     print("===> Setting GPU")
     if cuda:

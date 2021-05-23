@@ -45,8 +45,8 @@ class FeatureDataset(Dataset):
     def __getitem__(self, idx):
         hr_image = self.hr_imgs[idx]
         transform = transforms.Compose([
-            transforms.Resize((self.lheight, self.lwidth), 'bicubic'),
-            transforms.Resize((self.height, self.width), 'bicubic'),
+            transforms.Resize((self.lheight, self.lwidth), Image.BICUBIC),
+            transforms.Resize((self.height, self.width), Image.BICUBIC),
             transforms.ToTensor()
         ])
         return transform(hr_image), transforms.ToTensor()(hr_image)
