@@ -135,7 +135,7 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
         #     print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
 def save_checkpoint(model, epoch, optimizer):
-    model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)
+    model_out_path = "checkpoint/" + "model_epoch_{}_{}.pth".format(epoch, opt.featureType)
     state = {"epoch": epoch ,"model": model, "model_state_dict":model.state_dict(), "optimizer_state_dict":optimizer.state_dict()}
     if not os.path.exists("checkpoint/"):
         os.makedirs("checkpoint/")
