@@ -74,8 +74,9 @@ def concatFeatures(features, image_name):
         os.makedirs("features/")
     if not os.path.exists("features/LR_2/"):
         os.makedirs("features/LR_2/")
-    print("image file name --> ", "./features/LR_2/" + opt.featureType + "/" + image_name)
-    cv2.imwrite("./features/LR_2/" + opt.featureType + "/" + image_name, final_concat_feature)
+    if not os.path.exists("features/LR_2/" + opt.featureType):
+        os.makedirs("features/LR_2/" + opt.featureType)
+    cv2.imwrite("features/LR_2/" + opt.featureType + "/" + image_name, final_concat_feature)
 
 def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
