@@ -72,7 +72,9 @@ def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
     for i in range(2, len(feature) - 1):
         result = cv2.hconcat([result, feature[i]])
-    plt.imshow(result)
+    if not os.path.exists("outputs/"):
+        os.makedirs("outputs/")
+    cv2.imwrite("outputs/feature_0.png", result)
     return result
        
 
