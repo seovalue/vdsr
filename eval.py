@@ -50,25 +50,25 @@ def concatFeatures(features, image_name):
     
     features_new = list()
     features_new.extend([
-        concat_horizontal(features_0),
-        concat_horizontal(features_1),
-        concat_horizontal(features_2),
-        concat_horizontal(features_3),
-        concat_horizontal(features_4),
-        concat_horizontal(features_5),
-        concat_horizontal(features_6),
-        concat_horizontal(features_7),
-        concat_horizontal(features_8),
-        concat_horizontal(features_9),
-        concat_horizontal(features_10),
-        concat_horizontal(features_11),
-        concat_horizontal(features_12),
-        concat_horizontal(features_13),
-        concat_horizontal(features_14),
-        concat_horizontal(features_15)
+        concat_vertical(features_0),
+        concat_vertical(features_1),
+        concat_vertical(features_2),
+        concat_vertical(features_3),
+        concat_vertical(features_4),
+        concat_vertical(features_5),
+        concat_vertical(features_6),
+        concat_vertical(features_7),
+        concat_vertical(features_8),
+        concat_vertical(features_9),
+        concat_vertical(features_10),
+        concat_vertical(features_11),
+        concat_vertical(features_12),
+        concat_vertical(features_13),
+        concat_vertical(features_14),
+        concat_vertical(features_15)
     ])
 
-    final_concat_feature = concat_vertical(features_new)
+    final_concat_feature = concat_horizontal(features_new)
 
     save_path = "features/LR_2/" + opt.featureType + "/" + image_name
     if not os.path.exists("features/"):
