@@ -30,7 +30,7 @@ def PSNR(pred, gt, shave_border=0):
     return 20 * math.log10(255.0 / rmse)
 
 def concatFeatures(features):
-    print("features --> ", features)
+    print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
     features_2 = features[32:48]
@@ -50,22 +50,22 @@ def concatFeatures(features):
     
     features_new = list()
     features_new.append(
-        concat_horizontal(features_0),
-        concat_horizontal(features_1),
-        concat_horizontal(features_2),
-        concat_horizontal(features_3),
-        concat_horizontal(features_4),
-        concat_horizontal(features_5),
-        concat_horizontal(features_6),
-        concat_horizontal(features_7),
-        concat_horizontal(features_8),
-        concat_horizontal(features_9),
-        concat_horizontal(features_10),
-        concat_horizontal(features_11),
-        concat_horizontal(features_12),
-        concat_horizontal(features_13),
-        concat_horizontal(features_14),
-        concat_horizontal(features_15)
+        concat_horizontal(features_0)
+        # concat_horizontal(features_1),
+        # concat_horizontal(features_2),
+        # concat_horizontal(features_3),
+        # concat_horizontal(features_4),
+        # concat_horizontal(features_5),
+        # concat_horizontal(features_6),
+        # concat_horizontal(features_7),
+        # concat_horizontal(features_8),
+        # concat_horizontal(features_9),
+        # concat_horizontal(features_10),
+        # concat_horizontal(features_11),
+        # concat_horizontal(features_12),
+        # concat_horizontal(features_13),
+        # concat_horizontal(features_14),
+        # concat_horizontal(features_15)
     )
 
 def concat_horizontal(feature):
