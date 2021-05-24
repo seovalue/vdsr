@@ -96,6 +96,8 @@ if opt.singleImage == "Y" :
 else:
     image_path = os.path.join(opt.dataset, opt.featureType)
     image_list = os.listdir(image_path)
+    print(image_path)
+    print(image_list)
 
 
 for scale in scales:
