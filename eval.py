@@ -117,11 +117,11 @@ else:
 
 
 for scale in scales:
-    avg_psnr_predicted = 0.0
-    avg_psnr_bicubic = 0.0
-    avg_elapsed_time = 0.0
-    count = 0.0
     for image in image_list:
+        avg_psnr_predicted = 0.0
+        avg_psnr_bicubic = 0.0
+        avg_elapsed_time = 0.0
+        count = 0.0
         image_name_cropped = crop_feature(os.path.join(image_path, image), opt.featureType, opt.scaleFactor)
         features = []
         for image_name in image_name_cropped:
