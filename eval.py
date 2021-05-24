@@ -29,7 +29,7 @@ def PSNR(pred, gt, shave_border=0):
         return 100
     return 20 * math.log10(255.0 / rmse)
 
-def concatFeatures(features):
+def concatFeatures(features, image_name):
     print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
@@ -49,32 +49,44 @@ def concatFeatures(features):
     features_15 = features[240:256]
     
     features_new = list()
-    features_new.append(
-        concat_horizontal(features_0)
-        # concat_horizontal(features_1),
-        # concat_horizontal(features_2),
-        # concat_horizontal(features_3),
-        # concat_horizontal(features_4),
-        # concat_horizontal(features_5),
-        # concat_horizontal(features_6),
-        # concat_horizontal(features_7),
-        # concat_horizontal(features_8),
-        # concat_horizontal(features_9),
-        # concat_horizontal(features_10),
-        # concat_horizontal(features_11),
-        # concat_horizontal(features_12),
-        # concat_horizontal(features_13),
-        # concat_horizontal(features_14),
-        # concat_horizontal(features_15)
-    )
+    features_new.extend([
+        concat_horizontal(features_0),
+        concat_horizontal(features_1),
+        concat_horizontal(features_2),
+        concat_horizontal(features_3),
+        concat_horizontal(features_4),
+        concat_horizontal(features_5),
+        concat_horizontal(features_6),
+        concat_horizontal(features_7),
+        concat_horizontal(features_8),
+        concat_horizontal(features_9),
+        concat_horizontal(features_10),
+        concat_horizontal(features_11),
+        concat_horizontal(features_12),
+        concat_horizontal(features_13),
+        concat_horizontal(features_14),
+        concat_horizontal(features_15)
+    ])
+
+    final_concat_feature = concat_vertical(features_new)
+
+    if not os.path.exists("features/"):
+        os.makedirs("features/")
+    if not os.path.exists("features/LR_2/"):
+        os.makedirs("features/LR_2/")
+    
+    cv2.imwrite("./features/LR_2/" + opt.featureType + "/" + image_name, final_concat_feature)
 
 def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
-    for i in range(2, len(feature) - 1):
+    for i in range(2, len(feature)):
         result = cv2.hconcat([result, feature[i]])
-    if not os.path.exists("outputs/"):
-        os.makedirs("outputs/")
-    cv2.imwrite("outputs/feature_0.png", result)
+    return result
+       
+def concat_vertical(feature):
+    result = cv2.vconcat([feature[0], feature[1]])
+    for i in range(2, len(feature)):
+        result = cv2.vconcat([result, feature[i]])
     return result
        
 
@@ -152,7 +164,7 @@ for scale in scales:
             avg_psnr_predicted += psnr_predicted
             features.append(f_sr)
 
-        concatFeatures(features)
+        concatFeatures(features, image)
         print("Scale=", scale)
         print("Dataset=", opt.dataset)
         print("Average PSNR_predicted=", avg_psnr_predicted/count)
