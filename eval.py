@@ -106,7 +106,7 @@ for scale in scales:
     avg_elapsed_time = 0.0
     count = 0.0
     for image_name in image_list:
-        image_name_cropped = crop_feature(os.path.join(opt.dataset, image_name), opt.featureType, opt.scaleFactor)
+        image_name_cropped = crop_feature(os.path.join(image_path, image_name), opt.featureType, opt.scaleFactor)
         features = []
         for image in image_name_cropped:
             count += 1
