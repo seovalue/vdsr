@@ -29,7 +29,7 @@ def PSNR(pred, gt, shave_border=0):
         return 100
     return 20 * math.log10(255.0 / rmse)
 
-def concatFeatures(features, image_name):
+def concatFeatures(features):
     print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
@@ -68,16 +68,7 @@ def concatFeatures(features, image_name):
         concat_vertical(features_15)
     ])
 
-    final_concat_feature = concat_horizontal(features_new)
-
-    save_path = "features/LR_2/" + opt.featureType + "/" + image_name
-    if not os.path.exists("features/"):
-        os.makedirs("features/")
-    if not os.path.exists("features/LR_2/"):
-        os.makedirs("features/LR_2/")
-    if not os.path.exists("features/LR_2/" + opt.featureType):
-        os.makedirs("features/LR_2/" + opt.featureType)
-    cv2.imwrite(save_path, final_concat_feature)
+    return concat_horizontal(features_new)
 
 def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
