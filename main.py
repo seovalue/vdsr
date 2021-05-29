@@ -9,6 +9,7 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from vdsr import Net
 from datasets import get_training_data_loader
+from datasets import get_data_loader_test_version
 from make_dataset import make_dataset
 import numpy as np
 
@@ -57,6 +58,7 @@ def main():
     # train_set = DatasetFromHdf5("data/train.h5")
     # training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
     # training_data_loader = get_training_data_loader(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
+    get_data_loader_test_version(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
     training_data_loader = make_dataset(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
 
     print("===> Building model")

@@ -56,6 +56,13 @@ class FeatureDataset(Dataset):
         return len(self.hr_path * 16 * 16)
 
 
+def get_data_loader_test_version(data_path, feature_type, rescale_factor, batch_size, num_workers):
+    full_dataset = FeatureDataset(data_path, feature_type, rescale_factor, False)
+    print("dataset의 사이즈는 {}".format(len(full_dataset)))
+    for f in full_dataset:
+        print(type(f))
+
+
 def get_data_loader(data_path, feature_type, rescale_factor, batch_size, num_workers):
     full_dataset = FeatureDataset(data_path, feature_type, rescale_factor, False)
     train_size = int(0.9 * len(full_dataset))
