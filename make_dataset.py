@@ -20,7 +20,7 @@ def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
             bicubic_interpolated_image = crop.resize((w//scale_factor, h//scale_factor), Image.BICUBIC)
             bicubic_interpolated_image = bicubic_interpolated_image.resize((w,h), Image.BICUBIC) # 다시 원래 크기로 키우기
             reconstructed_features.append(np.array(bicubic_interpolated_image).astype(float))
-        full_dataset.append(concatFeatures(reconstructed_features, crop, feature_type))
+        full_dataset.append(concatFeatures(reconstructed_features, image, feature_type))
     
     torch.manual_seed(3334)
     return torch.utils.data.DataLoader(dataset=full_dataset, batch_size=batch_size, shuffle=True,
