@@ -43,6 +43,8 @@ class FeatureDataset(Dataset):
                     self.hr_imgs.append(crop)
 
     def __getitem__(self, idx):
+        print("__getitem__")
+        print("idx {}".format(idx))
         hr_image = self.hr_imgs[idx]
         transform = transforms.Compose([
             transforms.Resize((self.lheight, self.lwidth), Image.BICUBIC),
