@@ -27,7 +27,6 @@ def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
                                                num_workers=num_workers, pin_memory=False)
 
 def concatFeatures(features, image_name, feature_type):
-    print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
     features_2 = features[32:48]
@@ -75,8 +74,7 @@ def concatFeatures(features, image_name, feature_type):
     if not os.path.exists("features/LR_2/" + feature_type):
         os.makedirs("features/LR_2/" + feature_type)
     cv2.imwrite(save_path, final_concat_feature)
-    print("saved feature in {}".format(save_path))
-
+    
     return final_concat_feature
 
 def concat_horizontal(feature):
