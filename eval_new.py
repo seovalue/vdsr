@@ -122,7 +122,7 @@ for scale in scales:
         avg_psnr_bicubic = 0.0
         avg_elapsed_time = 0.0
         count = 0.0
-        image_name_cropped = crop_feature(os.path.join(image_path, image), opt.featureType, opt.scaleFactor)
+        image_name_cropped = crop_feature(os.path.join(image_path, image), opt.featureType, opt.scaleFactor, False)
         image_name = concatFeatures(image_name_cropped)
 
 
@@ -169,7 +169,7 @@ for scale in scales:
         if not os.path.exists("outputs/LR_2" + opt.featureType):
             os.makedirs("outputs/LR_2" +  opt.featureType)
         cv2.imwrite(save_path, f_sr)
-        
+
         psnr_predicted = PSNR(f_gt, f_sr,shave_border=scale)
         avg_psnr_predicted += psnr_predicted
         
