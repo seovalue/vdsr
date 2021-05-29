@@ -4,7 +4,6 @@ import os
 from glob import glob
 from torchvision import transforms
 from torch.utils.data.dataset import Dataset
-from torchvision import transforms
 import torch
 import pdb
 import math

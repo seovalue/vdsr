@@ -4,6 +4,8 @@ from PIL import Image
 import numpy as np
 import torch
 from torch.utils.data.dataset import Dataset
+from torch.utils.data import TensorDataset, DataLoader
+from torchvision import transforms
 import cv2
 
 def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
@@ -25,7 +27,9 @@ def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
         full_dataset.append(concatFeatures(reconstructed_features, image, feature_type))
     
     torch.manual_seed(3334)
-    return torch.utils.data.DataLoader(dataset=full_dataset, batch_size=batch_size, shuffle=True,
+    dataset = TensorDataset(torch.Tensor(full_dataset))
+    
+    return DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True,
                                                num_workers=num_workers, pin_memory=False)
 
 def concatFeatures(features, image_name, feature_type):
@@ -77,7 +81,7 @@ def concatFeatures(features, image_name, feature_type):
         os.makedirs("features/LR_2/" + feature_type)
     cv2.imwrite(save_path, final_concat_feature)
     
-    return final_concat_feature
+    return np.array(final_concat_feature).astype(float)
 
 def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
