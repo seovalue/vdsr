@@ -22,6 +22,8 @@ def crop_feature(datapath, feature_type, scale_factor, print_message):
           (left, upper, right, lower) = (
           i * width, j * height, (i + 1) * width, (j + 1) * height)
           crop = hr_image.crop((left, upper, right, lower))
+          crop = crop.resize((lwidth,lheight), Image.BICUBIC)
+          crop = crop.resize((width, height), Image.BICUBIC)
           hr_imgs.append(crop)
       
   return hr_imgs

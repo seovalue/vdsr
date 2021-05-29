@@ -118,7 +118,7 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
     model.train()
 
     for iteration, batch in enumerate(training_data_loader, 1):
-        input, target = Variable(batch[0]), Variable(batch[1], requires_grad=False)
+        input, target = Variable(batch[0].float()), Variable(batch[1].float(), requires_grad=False)
         total_loss = 0
         if opt.cuda:
             input = input.cuda()
