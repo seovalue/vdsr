@@ -15,6 +15,7 @@ def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
     image_list = os.listdir(image_path)
     full_dataset = list()
     for image in image_list:
+        origin_image = Image.open(os.path.join(image_path,image))
         image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor, print_message)
         print_message = False
         # bicubic interpolation

@@ -43,12 +43,14 @@ class FeatureDataset(Dataset):
 
     def __getitem__(self, idx):
         hr_image = self.hr_imgs[idx]
-        transform = transforms.Compose([
-            transforms.Resize((self.lheight, self.lwidth), Image.BICUBIC),
-            transforms.Resize((self.height, self.width), Image.BICUBIC),
-            transforms.ToTensor()
-        ])
-        return transform(hr_image), transforms.ToTensor()(hr_image)
+            
+
+        # transform = transforms.Compose([
+        #     transforms.Resize((self.lheight, self.lwidth), Image.BICUBIC),
+        #     transforms.Resize((self.height, self.width), Image.BICUBIC),
+        #     transforms.ToTensor()
+        # ])
+        return transform(hr_image), transforms.ToTensor()(hr_image) # hr_image를 변환한 것과, 변환하지 않은 것을 Tensor로 각각 반환
 
     def __len__(self):
         return len(self.hr_path * 16 * 16)
