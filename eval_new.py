@@ -161,8 +161,8 @@ for scale in scales:
             os.makedirs("outputs/")
         if not os.path.exists("outputs/LR_2"):
             os.makedirs("outputs/LR_2")
-        if not os.path.exists("outputs/LR_2" + opt.featureType):
-            os.makedirs("outputs/LR_2" +  opt.featureType)
+        if not os.path.exists("outputs/LR_2/" + opt.featureType):
+            os.makedirs("outputs/LR_2/" +  opt.featureType)
         cv2.imwrite(save_path, f_sr)
 
         psnr_predicted = PSNR(f_gt, f_sr,shave_border=scale)
