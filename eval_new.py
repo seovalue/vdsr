@@ -156,7 +156,7 @@ for scale in scales:
         f_sr[f_sr>255.] = 255.
         f_sr = f_sr[0,:,:]
 
-        save_path = "outputs/LR_2/" +  opt.featureType
+        save_path = "outputs/LR_2/" +  opt.featureType + "/" + image
         if not os.path.exists("outputs/"):
             os.makedirs("outputs/")
         if not os.path.exists("outputs/LR_2"):
