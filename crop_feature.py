@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-def crop_feature(datapath, feature_type, scale_factor):
+def crop_feature(datapath, feature_type, scale_factor, print_message):
   data_path = datapath
   datatype = feature_type
   rescale_factor = scale_factor
@@ -14,7 +14,8 @@ def crop_feature(datapath, feature_type, scale_factor):
   height = int(h / 16)
   lwidth = int(width / rescale_factor)
   lheight = int(height / rescale_factor)
-  print("lr: ({} {}), hr: ({} {})".format(lwidth, lheight, width, height))
+  if print_message:
+    print("lr: ({} {}), hr: ({} {})".format(lwidth, lheight, width, height))
   hr_image = Image.open(datapath)  # .convert('RGB')\
   for i in range(16):
       for j in range(16):

@@ -7,12 +7,14 @@ from torch.utils.data.dataset import Dataset
 import cv2
 
 def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
+    print_message = True
     dataset = dataset+"/LR_2"
     image_path = os.path.join(dataset, feature_type)
     image_list = os.listdir(image_path)
     full_dataset = list()
     for image in image_list:
-        image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor)
+        image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor, print_message)
+        print_message = False
         # bicubic interpolation
         reconstructed_features = list()
         for crop in image_cropped:
