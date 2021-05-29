@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from vdsr import Net
 # from datasets import get_training_data_loader
 # from datasets import get_data_loader_test_version
-from test import get_training_data_loader
+from feature_dataset import get_training_data_loader
 from make_dataset import make_dataset
 import numpy as np
 
@@ -118,14 +118,14 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
     model.train()
 
     for iteration, batch in enumerate(training_data_loader, 1):
-        input, target = Variable(batch[0].float()), Variable(batch[1].float(), requires_grad=False)
+        optimizer.zero_grad()
+        input, target = Variable(batch[0], requires_grad=False), Variable(batch[1], requires_grad=False)
         total_loss = 0
         if opt.cuda:
             input = input.cuda()
             target = target.cuda()
 
         loss = criterion(model(input), target)
-        optimizer.zero_grad()
         total_loss += loss.item()
         loss.backward() 
         nn.utils.clip_grad_norm_(model.parameters(), opt.clip)

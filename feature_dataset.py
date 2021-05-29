@@ -41,7 +41,7 @@ class FeatureDataset(Dataset):
         for hr in self.hr_path: # 256개의 피쳐로 나눈다.
             hr_cropped_imgs = []
             hr_image = Image.open(hr)  # .convert('RGB')\
-            self.original_hr_imgs.append(hr_image) # 원본을 저장한다.
+            self.original_hr_imgs.append(np.array(hr_image).astype(float)) # 원본을 저장한다.
             for i in range(16):
                 for j in range(16):
                     (left, upper, right, lower) = (
@@ -51,7 +51,6 @@ class FeatureDataset(Dataset):
             self.hr_imgs.append(hr_cropped_imgs)
 
         self.final_results = []
-            # hr_imgs = [[], [], [], ... ,[]] 내부에 500개의 []가 들어감.
         print("resize and concat features ...")
         for i in range(0, len(self.hr_imgs)):
             hr_img = self.hr_imgs[i]  
@@ -61,16 +60,12 @@ class FeatureDataset(Dataset):
                 image = image.resize((self.width, self.height), Image.BICUBIC)
                 interpolated_images.append(np.array(image).astype(float))
             self.final_results.append(concatFeatures(interpolated_images, self.names[i], self.datatype))
-        print(len(self.original_hr_imgs))
-        print(len(self.final_results))
+        print(self.original_hr_imgs)
+        print(self.final_results)
 
     def __getitem__(self, idx):
-      try:
-        ground_truth = np.array(self.original_hr_imgs[idx]).astype(float) 
-      except IndexError as e:
-        print(e)
-      # ground_truth = self.original_hr_imgs[idx] 
-      final_result = np.array(self.final_results[idx]).astype(float) # list
+      ground_truth = self.original_hr_imgs[idx]
+      final_result = self.final_results[idx] # list
       return transforms.ToTensor()(final_result), transforms.ToTensor()(ground_truth) # hr_image를 변환한 것과, 변환하지 않은 것을 Tensor로 각각 반환
 
     def __len__(self):
