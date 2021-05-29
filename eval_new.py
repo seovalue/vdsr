@@ -29,8 +29,12 @@ def PSNR(pred, gt, shave_border=0):
         return 100
     return 20 * math.log10(255.0 / rmse)
 
-def concatFeatures(features):
-    print("features size --> ", len(features))
+def concatFeatures(input_features,features):
+    print("features size --> ", len(input_features))
+    
+    for f in input_features:
+        features.append(np.array(f).astype(float))
+
     features_0 = features[:16]
     features_1 = features[16:32]
     features_2 = features[32:48]
@@ -114,7 +118,7 @@ for scale in scales:
         avg_elapsed_time = 0.0
         count = 0.0
         image_name_cropped = crop_feature(os.path.join(image_path, image), opt.featureType, opt.scaleFactor, False)
-        image_name = concatFeatures(image_name_cropped)
+        image_name = concatFeatures(image_name_cropped, list())
 
 
         count += 1
