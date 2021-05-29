@@ -14,7 +14,10 @@ def crop_feature(datapath, feature_type, scale_factor):
   height = int(h / 16)
   lwidth = int(width / rescale_factor)
   lheight = int(height / rescale_factor)
-  print("lr: ({} {}), hr: ({} {})".format(lwidth, lheight, width, height))
+  count = 1
+  if count == 1 :
+    print("lr: ({} {}), hr: ({} {})".format(lwidth, lheight, width, height))
+    count += 1
   hr_image = Image.open(datapath)  # .convert('RGB')\
   for i in range(16):
       for j in range(16):
