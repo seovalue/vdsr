@@ -38,10 +38,12 @@ def main():
     for image in image_list:
         origin_image = Image.open(os.path.join(image_path,image))
         label.append(np.array(origin_image).astype(float))
+        print("cropped ....")
         image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor, print_message)
         print_message = False
         # bicubic interpolation
         reconstructed_features = list()
+        print("size of image_cropped : {}".format(len(image_cropped)))
         for crop in image_cropped:
             w, h = crop.size
             bicubic_interpolated_image = crop.resize((w//scale_factor, h//scale_factor), Image.BICUBIC)
