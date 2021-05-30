@@ -7,15 +7,37 @@ from torch.utils.data.dataset import Dataset
 from torch.utils.data import TensorDataset, DataLoader
 from torchvision import transforms
 import cv2
+import glob
+import h5py
+import argparse
 
-def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
+parser = argparse.ArgumentParser(description="make Dataset")
+parser.add_argument("--dataset", type=str)
+parser.add_argument("--featureType", type=str)
+parser.add_argument("--scaleFactor", type=int)
+parser.add_argument("--batchSize", type=int, default=16)
+parser.add_argument("--threads", type=int, default=3)
+
+# dataset, feature_type, scale_factor, batch_size, num_workers
+def main():
+    opt = parser.parse_args()
+
+    dataset = opt.dataset
+    feature_type = opt.featureType
+    scale_factor = opt.scaleFactor
+    batch_size = opt.batchSize
+    num_workers = opt.threads
+
     print_message = True
     dataset = dataset+"/LR_2"
     image_path = os.path.join(dataset, feature_type)
     image_list = os.listdir(image_path)
-    full_dataset = list()
+    input = list()
+    label = list()
+
     for image in image_list:
         origin_image = Image.open(os.path.join(image_path,image))
+        label.append(np.array(origin_image).astype(float))
         image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor, print_message)
         print_message = False
         # bicubic interpolation
@@ -25,13 +47,14 @@ def make_dataset(dataset, feature_type, scale_factor, batch_size, num_workers):
             bicubic_interpolated_image = crop.resize((w//scale_factor, h//scale_factor), Image.BICUBIC)
             bicubic_interpolated_image = bicubic_interpolated_image.resize((w,h), Image.BICUBIC) # 다시 원래 크기로 키우기
             reconstructed_features.append(np.array(bicubic_interpolated_image).astype(float))
-        full_dataset.append(concatFeatures(reconstructed_features, image, feature_type))
-    
-    torch.manual_seed(3334)
-    dataset = TensorDataset(torch.Tensor(full_dataset))
-    
-    return DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True,
-                                               num_workers=num_workers, pin_memory=False)
+        input.append(concatFeatures(reconstructed_features, image, feature_type))
+
+    if len(input) == len(label):
+        save_h5(input, label)
+        print("saved..")
+    else:
+        print(len(input), len(label), "이 다릅니다.")
+
 
 def concatFeatures(features, image_name, feature_type):
     features_0 = features[:16]
@@ -95,3 +118,15 @@ def concat_vertical(feature):
     for i in range(2, len(feature)):
         result = cv2.vconcat([result, feature[i]])
     return result
+
+def save_h5(sub_ip, sub_la, savepath = 'data/train.h5'):
+    if not os.path.exists("data/"):
+        os.makedirs("data/")    
+    
+    path = os.path.join(os.getcwd(), savepath)
+    with h5py.File(path, 'w') as hf:
+        hf.create_dataset('input', data=sub_ip)
+        hf.create_dataset('label', data=sub_la)
+
+if __name__ == "__main__":
+    main()
