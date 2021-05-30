@@ -38,12 +38,11 @@ def main():
     for image in image_list:
         origin_image = Image.open(os.path.join(image_path,image))
         label.append(np.array(origin_image).astype(float))
-        print("cropped ....")
         image_cropped = crop_feature(os.path.join(image_path, image), feature_type, scale_factor, print_message)
         print_message = False
         # bicubic interpolation
         reconstructed_features = list()
-        print("size of image_cropped : {}".format(len(image_cropped)))
+        print("crop is done.")
         for crop in image_cropped:
             w, h = crop.size
             bicubic_interpolated_image = crop.resize((w//scale_factor, h//scale_factor), Image.BICUBIC)
@@ -51,8 +50,9 @@ def main():
             reconstructed_features.append(np.array(bicubic_interpolated_image).astype(float))
         input.append(concatFeatures(reconstructed_features, image, feature_type))
 
+    print("concat is done.")
     if len(input) == len(label):
-        save_h5(input, label)
+        save_h5(input, label, 'data/train_{}.h5'.format(feature_type))
         print("saved..")
     else:
         print(len(input), len(label), "이 다릅니다.")
@@ -121,7 +121,7 @@ def concat_vertical(feature):
         result = cv2.vconcat([result, feature[i]])
     return result
 
-def save_h5(sub_ip, sub_la, savepath = 'data/train.h5'):
+def save_h5(sub_ip, sub_la, savepath):
     if not os.path.exists("data/"):
         os.makedirs("data/")    
     
