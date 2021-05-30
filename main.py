@@ -13,10 +13,12 @@ from vdsr import Net
 from feature_dataset import get_training_data_loader
 from make_dataset import make_dataset
 import numpy as np
+from dataFromH5 import Read_dataset_h5
 
 # Training settings
 parser = argparse.ArgumentParser(description="PyTorch VDSR")
 parser.add_argument("--dataRoot", type=str)
+parser.add_argument("--useH5", type=str, default="")
 parser.add_argument("--featureType", type=str)
 parser.add_argument("--scaleFactor", type=int, default=4)
 parser.add_argument("--batchSize", type=int, default=64, help="Training batch size")
@@ -56,9 +58,13 @@ def main():
 ################## Loading Datasets ##########################
  
     print("===> Loading datasets")
+    if opt.useH5:
+        train_set = Read_dataset_h5(opt.dataRoot)
+        training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True) # read to DataLoader
+    else:
     # train_set = DatasetFromHdf5("data/train.h5")
     # training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
-    training_data_loader = get_training_data_loader(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
+        training_data_loader = get_training_data_loader(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
     # training_data_loader = make_dataset(opt.dataRoot, opt.featureType, opt.scaleFactor, opt.batchSize, opt.threads)
 
     print("===> Building model")
