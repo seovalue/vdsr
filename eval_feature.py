@@ -113,7 +113,7 @@ for iter in range(0, 100):
     [768, 768], cfg.INPUT.MAX_SIZE_TEST
   )
   image_prefix = "COCO_val2017_"
-  image = cv2.imread(opt.valid_data_path + image_prefix + '000000'+ image_file_number +'.jpg')
+  image = cv2.imread(opt.valid_data_path + '000000'+ image_file_number +'.jpg')
   # image = cv2.imread('./dataset/validset_100/000000'+ image_file_number +'.jpg')
   height, width = image.shape[:2]
   image = aug.get_transform(image).apply_image(image)
@@ -155,7 +155,7 @@ for iter in range(0, 100):
 
   # p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
   # p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p2_feature_img = Image.open('./result/inference/LR_2/p2/' + image_prefix + '000000' + image_file_number +'.png')
+  p2_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p2/' + image_prefix + '000000' + image_file_number +'.png')
   # # y_p2, cb, cr = p2_feature_img.split()
   p2_feature_arr = np.array(p2_feature_img)
   p2_feature_arr_round = myRound(p2_feature_arr)
@@ -163,14 +163,14 @@ for iter in range(0, 100):
   # p3_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p3.png')
 
   # p3_feature_img = Image.open('./result/{}/inference/{}_p3x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p3_feature_img = Image.open('./result/inference/LR_2/p3/' + image_prefix + '000000' + image_file_number +'.png')
+  p3_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p3/' + image_prefix + '000000' + image_file_number +'.png')
   # # y_p3, cb2, cr2 = p3_feature_img.split()
   p3_feature_arr = np.array(p3_feature_img)
   p3_feature_arr_round = myRound(p3_feature_arr)
 
   # p4_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p4.png')
   # p4_feature_img = Image.open('./result/{}/inference/{}_p4x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p4_feature_img = Image.open('./result/inference/LR_2/p4/' + image_prefix + '000000' + image_file_number +'.png')
+  p4_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p4/' + image_prefix + '000000' + image_file_number +'.png')
   # y_p4, cb3, cr3 = p4_feature_img.split()
   p4_feature_arr = np.array(p4_feature_img)
   p4_feature_arr_round = myRound(p4_feature_arr)
