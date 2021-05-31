@@ -280,7 +280,7 @@ for iter in range(0, 100):
     # [480, 480], cfg.INPUT.MAX_SIZE_TEST
     [768, 768], cfg.INPUT.MAX_SIZE_TEST
   )
-  image = cv2.imread('./dataset/validset_100/000000'+ image_file_number +'.jpg')
+  image = cv2.imread(opt.valid_data_path + '000000'+ image_file_number +'.jpg')
   height, width = image.shape[:2]
   image = aug.get_transform(image).apply_image(image)
   image = torch.as_tensor(image.astype("float32").transpose(2, 0, 1))
