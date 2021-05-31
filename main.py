@@ -14,6 +14,7 @@ from datasets import get_training_data_loader
 from make_dataset import make_dataset
 import numpy as np
 from dataFromH5 import Read_dataset_h5
+import matplotlib.pyplot as plt
 
 # Training settings
 parser = argparse.ArgumentParser(description="PyTorch VDSR")
@@ -33,6 +34,10 @@ parser.add_argument("--momentum", default=0.9, type=float, help="Momentum, Defau
 parser.add_argument("--weight-decay", "--wd", default=1e-4, type=float, help="Weight decay, Default: 1e-4")
 parser.add_argument('--pretrained', default='', type=str, help='path to pretrained model (default: none)')
 parser.add_argument("--gpus", default="0", type=str, help="gpu ids (default: 0)")
+
+
+total_loss_for_plot = list()
+total_pnsr = list()
 
 def main():
     global opt, model
@@ -95,6 +100,7 @@ def main():
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=opt.momentum, weight_decay=opt.weight_decay)
 
     print("===> Training")
+
     for epoch in range(opt.start_epoch, opt.nEpochs + 1):
         train(training_data_loader, optimizer, model, criterion, epoch)
         save_checkpoint(model, epoch, optimizer)
@@ -133,14 +139,17 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
         optimizer.step()
 
     epoch_loss = total_loss / len(training_data_loader)
+    total_loss_for_plot.append(epoch_loss)
     psnr = PSNR(epoch_loss)
+    total_pnsr.append(psnr)
     print("===> Epoch[{}]: loss : {:.10f} ,PSNR : {:.10f}".format(epoch, epoch_loss, psnr))
         # if iteration%100 == 0:
         #     print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
 def save_checkpoint(model, epoch, optimizer):
     model_out_path = "checkpoint/" + "model_epoch_{}_{}.pth".format(epoch, opt.featureType)
-    state = {"epoch": epoch ,"model": model, "model_state_dict":model.state_dict(), "optimizer_state_dict":optimizer.state_dict()}
+    state = {"epoch": epoch ,"model": model, "model_state_dict":model.state_dict(), "optimizer_state_dict":optimizer.state_dict(),
+        "loss": total_loss_for_plot, "psnr":total_pnsr}
     if not os.path.exists("checkpoint/"):
         os.makedirs("checkpoint/")
 
