@@ -39,7 +39,7 @@ def PSNR_ver2(original, compressed):
     psnr = 20 * log10(max_pixel / sqrt(mse))
     return psnr
 
-def concatFeatures(features, image_name):
+def concatFeatures(features, image_name, bicubic=False):
     print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
@@ -80,14 +80,26 @@ def concatFeatures(features, image_name):
 
     final_concat_feature = concat_horizontal(features_new)
 
-    save_path = "features/LR_2/" + opt.featureType + "/" + image_name
-    if not os.path.exists("features/"):
-        os.makedirs("features/")
-    if not os.path.exists("features/LR_2/"):
-        os.makedirs("features/LR_2/")
-    if not os.path.exists("features/LR_2/" + opt.featureType):
-        os.makedirs("features/LR_2/" + opt.featureType)
-    cv2.imwrite(save_path, final_concat_feature)
+    if bicubic:
+        save_path = "features/LR_2/LR/" + opt.featureType + "/" + image_name
+        if not os.path.exists("features/"):
+            os.makedirs("features/")
+        if not os.path.exists("features/LR_2/"):
+            os.makedirs("features/LR_2/")
+        if not os.path.exists("features/LR_2/LR/"):
+            os.makedirs("features/LR_2/LR/")    
+        if not os.path.exists("features/LR_2/LR/" + opt.featureType):
+            os.makedirs("features/LR_2/LR/" + opt.featureType)
+        cv2.imwrite(save_path, f_bi)
+    else: 
+        save_path = "features/LR_2/" + opt.featureType + "/" + image_name
+        if not os.path.exists("features/"):
+            os.makedirs("features/")
+        if not os.path.exists("features/LR_2/"):
+            os.makedirs("features/LR_2/")
+        if not os.path.exists("features/LR_2/" + opt.featureType):
+            os.makedirs("features/LR_2/" + opt.featureType)
+        cv2.imwrite(save_path, final_concat_feature)
 
 def concat_horizontal(feature):
     result = cv2.hconcat([feature[0], feature[1]])
@@ -134,6 +146,7 @@ for scale in scales:
         count = 0.0
         image_name_cropped = crop_feature(os.path.join(image_path, image), opt.featureType, opt.scaleFactor)
         features = []
+        features_bicubic = []
         for image_name in image_name_cropped:
             count += 1
             f_gt = image_name
@@ -145,18 +158,7 @@ for scale in scales:
             f_bi = np.array(f_bi)    
             f_gt = f_gt.astype(float)
             f_bi = f_bi.astype(float)
-
-            save_path = "features/LR_2/LR/" + opt.featureType + "/" + image_name
-            if not os.path.exists("features/"):
-                os.makedirs("features/")
-            if not os.path.exists("features/LR_2/"):
-                os.makedirs("features/LR_2/")
-            if not os.path.exists("features/LR_2/LR/"):
-                os.makedirs("features/LR_2/LR/")    
-            if not os.path.exists("features/LR_2/LR/" + opt.featureType):
-                os.makedirs("features/LR_2/LR/" + opt.featureType)
-            cv2.imwrite(save_path, f_bi)
-
+            features_bicubic.append(f_bi)
             # psnr_bicubic = PSNR(f_gt, f_bi,shave_border=scale)
             psnr_bicubic = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_bi))
             avg_psnr_bicubic += psnr_bicubic
@@ -190,6 +192,7 @@ for scale in scales:
             features.append(f_sr)
 
         concatFeatures(features, image)
+        concatFeatures(features_bicubic, image, True)
     print("Scale=", scale)
     print("Dataset=", opt.dataset)
     print("Average PSNR_predicted=", avg_psnr_predicted/count)
