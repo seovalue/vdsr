@@ -8,6 +8,7 @@ from crop_feature import crop_feature
 from PIL import Image
 import cv2
 from matplotlib import pyplot as plt
+from math import log10, sqrt
 
 parser = argparse.ArgumentParser(description="PyTorch VDSR Eval")
 parser.add_argument("--cuda", action="store_true", help="use cuda?")
@@ -28,6 +29,15 @@ def PSNR(pred, gt, shave_border=0):
     if rmse == 0:
         return 100
     return 20 * math.log10(255.0 / rmse)
+
+def PSNR_ver2(original, compressed):
+    mse = np.mean((original - compressed) ** 2)
+    if(mse == 0):  # MSE is zero means no noise is present in the signal .
+                  # Therefore PSNR have no importance.
+        return 100
+    max_pixel = 255.0
+    psnr = 20 * log10(max_pixel / sqrt(mse))
+    return psnr
 
 def concatFeatures(features, image_name):
     print("features size --> ", len(features))
@@ -147,7 +157,8 @@ for scale in scales:
                 os.makedirs("features/LR_2/LR/" + opt.featureType)
             cv2.imwrite(save_path, f_bi)
 
-            psnr_bicubic = PSNR(f_gt, f_bi,shave_border=scale)
+            # psnr_bicubic = PSNR(f_gt, f_bi,shave_border=scale)
+            psnr_bicubic = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_bi))
             avg_psnr_bicubic += psnr_bicubic
 
             f_input = f_bi/255.
@@ -173,15 +184,16 @@ for scale in scales:
             f_sr[f_sr>255.] = 255.
             f_sr = f_sr[0,:,:]
 
-            psnr_predicted = PSNR(f_gt, f_sr,shave_border=scale)
+            # psnr_predicted = PSNR(f_gt, f_sr,shave_border=scale)
+            psnr_predicted = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_sr))
             avg_psnr_predicted += psnr_predicted
             features.append(f_sr)
 
         concatFeatures(features, image)
-        print("Scale=", scale)
-        print("Dataset=", opt.dataset)
-        print("Average PSNR_predicted=", avg_psnr_predicted/count)
-        print("Average PSNR_bicubic=", avg_psnr_bicubic/count)
+    print("Scale=", scale)
+    print("Dataset=", opt.dataset)
+    print("Average PSNR_predicted=", avg_psnr_predicted/count)
+    print("Average PSNR_bicubic=", avg_psnr_bicubic/count)
 
 
 # Show graph
