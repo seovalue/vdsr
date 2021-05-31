@@ -136,6 +136,17 @@ for scale in scales:
             f_gt = f_gt.astype(float)
             f_bi = f_bi.astype(float)
 
+            save_path = "features/LR_2/LR/" + opt.featureType + "/" + image_name
+            if not os.path.exists("features/"):
+                os.makedirs("features/")
+            if not os.path.exists("features/LR_2/"):
+                os.makedirs("features/LR_2/")
+            if not os.path.exists("features/LR_2/LR/"):
+                os.makedirs("features/LR_2/LR/")    
+            if not os.path.exists("features/LR_2/LR/" + opt.featureType):
+                os.makedirs("features/LR_2/LR/" + opt.featureType)
+            cv2.imwrite(save_path, f_bi)
+
             psnr_bicubic = PSNR(f_gt, f_bi,shave_border=scale)
             avg_psnr_bicubic += psnr_bicubic
 
