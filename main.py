@@ -15,6 +15,7 @@ from datasets import get_training_data_loader
 import numpy as np
 from dataFromH5 import Read_dataset_h5
 import matplotlib.pyplot as plt
+import math
 
 # Training settings
 parser = argparse.ArgumentParser(description="PyTorch VDSR")
@@ -112,6 +113,7 @@ def adjust_learning_rate(optimizer, epoch):
 
 def PSNR(loss):
     psnr = 10 * np.log10(1 / (loss + 1e-10))
+    # psnr = 20 * math.log10(255.0 / (math.sqrt(loss)))
     return psnr
 
 def train(training_data_loader, optimizer, model, criterion, epoch):

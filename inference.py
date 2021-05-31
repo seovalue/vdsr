@@ -31,7 +31,6 @@ def PSNR(pred, gt, shave_border=0):
     return 20 * math.log10(255.0 / rmse)
 
 def concatFeatures(features, image_name, bicubic=False):
-    print("features size --> ", len(features))
     features_0 = features[:16]
     features_1 = features[16:32]
     features_2 = features[32:48]
