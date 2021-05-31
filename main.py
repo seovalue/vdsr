@@ -11,7 +11,7 @@ from vdsr import Net
 from datasets import get_training_data_loader
 # from datasets import get_data_loader_test_version
 # from feature_dataset import get_training_data_loader
-from make_dataset import make_dataset
+# from make_dataset import make_dataset
 import numpy as np
 from dataFromH5 import Read_dataset_h5
 import matplotlib.pyplot as plt
