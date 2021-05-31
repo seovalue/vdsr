@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-def crop_feature(datapath, feature_type, scale_factor, print_message):
+def crop_feature(datapath, feature_type, scale_factor, print_message=False):
   data_path = datapath
   datatype = feature_type
   rescale_factor = scale_factor
