@@ -1,22 +1,22 @@
-# # [1]
-# # install dependencies: 
+# # # [1]
+# # # install dependencies: 
 # !pip install pyyaml==5.1
 # import torch, torchvision
 # print(torch.__version__, torch.cuda.is_available())
 # !gcc --version
 # # opencv is pre-installed on colab
 
-# # [2]
-# # install detectron2: (Colab has CUDA 10.1 + torch 1.8)
-# # See https://detectron2.readthedocs.io/tutorials/install.html for instructions
+# # # [2]
+# # # install detectron2: (Colab has CUDA 10.1 + torch 1.8)
+# # # See https://detectron2.readthedocs.io/tutorials/install.html for instructions
 # import torch
 # assert torch.__version__.startswith("1.8")   # need to manually install torch 1.8 if Colab changes its default version
 # !pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/torch1.8/index.html
 # # exit(0)  # After installation, you need to "restart runtime" in Colab. This line can also restart runtime
 
-# # [3]
-# # Some basic setup:
-# # Setup detectron2 logger
+# # # [3]
+# # # Some basic setup:
+# # # Setup detectron2 logger
 # import detectron2
 # from detectron2.utils.logger import setup_logger
 # setup_logger()
@@ -155,7 +155,7 @@ for iter in range(0, 100):
 
   # p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
   # p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p2_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p2/' + image_prefix + '000000' + image_file_number +'.png')
+  p2_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p2/' + image_prefix + '000000' + image_file_number + '_p2' +'.png')
   # # y_p2, cb, cr = p2_feature_img.split()
   p2_feature_arr = np.array(p2_feature_img)
   p2_feature_arr_round = myRound(p2_feature_arr)
@@ -163,14 +163,14 @@ for iter in range(0, 100):
   # p3_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p3.png')
 
   # p3_feature_img = Image.open('./result/{}/inference/{}_p3x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p3_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p3/' + image_prefix + '000000' + image_file_number +'.png')
+  p3_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p3/' + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
   # # y_p3, cb2, cr2 = p3_feature_img.split()
   p3_feature_arr = np.array(p3_feature_img)
   p3_feature_arr_round = myRound(p3_feature_arr)
 
   # p4_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p4.png')
   # p4_feature_img = Image.open('./result/{}/inference/{}_p4x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p4_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p4/' + image_prefix + '000000' + image_file_number +'.png')
+  p4_feature_img = Image.open('/content/drive/MyDrive/result/inference/LR_2/p4/' + image_prefix + '000000' + image_file_number + '_p4' +'.png')
   # y_p4, cb3, cr3 = p4_feature_img.split()
   p4_feature_arr = np.array(p4_feature_img)
   p4_feature_arr_round = myRound(p4_feature_arr)
