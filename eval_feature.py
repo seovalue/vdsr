@@ -46,6 +46,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="PyTorch CARN")
 parser.add_argument("--data_path", type=str, default = "/home/ubuntu/JH/exp1/dataset")
+parser.add_argument("--valid_data_path", type=str)
 parser.add_argument("--rescale_factor", type=int, default=4, help="rescale factor for using in training")
 parser.add_argument("--model_name", type=str,choices= ["VDSR", "CARN", "SRRN","FRGAN"], default='CARN', help="Feature type for usingin training")
 parser.add_argument("--loss_type", type=str, choices= ["MSE", "L1", "SmoothL1","vgg_loss","ssim_loss","adv_loss","lpips"], default='MSE', help="loss type in training")
@@ -111,8 +112,9 @@ for iter in range(0, 100):
   #  [480, 480], cfg.INPUT.MAX_SIZE_TEST
     [768, 768], cfg.INPUT.MAX_SIZE_TEST
   )
-
-  image = cv2.imread('./dataset/validset_100/000000'+ image_file_number +'.jpg')
+  image_prefix = "COCO_val2017_"
+  image = cv2.imread(opt.valid_data_path + image_prefix + '000000'+ image_file_number +'.jpg')
+  # image = cv2.imread('./dataset/validset_100/000000'+ image_file_number +'.jpg')
   height, width = image.shape[:2]
   image = aug.get_transform(image).apply_image(image)
   image = torch.as_tensor(image.astype("float32").transpose(2, 0, 1))
@@ -152,20 +154,23 @@ for iter in range(0, 100):
   globals()['maxRange_{}'.format(image_file_number)] = maxRange
 
   # p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
-  p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  # p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  p2_feature_img = Image.open('./result/inference/LR_2/p2/' + image_prefix + '000000' + image_file_number +'.png')
   # # y_p2, cb, cr = p2_feature_img.split()
   p2_feature_arr = np.array(p2_feature_img)
   p2_feature_arr_round = myRound(p2_feature_arr)
 
   # p3_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p3.png')
 
-  p3_feature_img = Image.open('./result/{}/inference/{}_p3x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  # p3_feature_img = Image.open('./result/{}/inference/{}_p3x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  p3_feature_img = Image.open('./result/inference/LR_2/p3/' + image_prefix + '000000' + image_file_number +'.png')
   # # y_p3, cb2, cr2 = p3_feature_img.split()
   p3_feature_arr = np.array(p3_feature_img)
   p3_feature_arr_round = myRound(p3_feature_arr)
 
   # p4_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p4.png')
-  p4_feature_img = Image.open('./result/{}/inference/{}_p4x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  # p4_feature_img = Image.open('./result/{}/inference/{}_p4x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
+  p4_feature_img = Image.open('./result/inference/LR_2/p4/' + image_prefix + '000000' + image_file_number +'.png')
   # y_p4, cb3, cr3 = p4_feature_img.split()
   p4_feature_arr = np.array(p4_feature_img)
   p4_feature_arr_round = myRound(p4_feature_arr)

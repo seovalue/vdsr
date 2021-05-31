@@ -90,7 +90,7 @@ def concatFeatures(features, image_name, bicubic=False):
             os.makedirs("features/LR_2/LR/")    
         if not os.path.exists("features/LR_2/LR/" + opt.featureType):
             os.makedirs("features/LR_2/LR/" + opt.featureType)
-        cv2.imwrite(save_path, f_bi)
+        cv2.imwrite(save_path, final_concat_feature)
     else: 
         save_path = "features/LR_2/" + opt.featureType + "/" + image_name
         if not os.path.exists("features/"):
