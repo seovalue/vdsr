@@ -30,15 +30,6 @@ def PSNR(pred, gt, shave_border=0):
         return 100
     return 20 * math.log10(255.0 / rmse)
 
-def PSNR_ver2(original, compressed):
-    mse = np.mean((original - compressed) ** 2)
-    if(mse == 0):  # MSE is zero means no noise is present in the signal .
-                  # Therefore PSNR have no importance.
-        return 100
-    max_pixel = 255.0
-    psnr = 20 * log10(max_pixel / sqrt(mse))
-    return psnr
-
 def concatFeatures(features, image_name, bicubic=False):
     print("features size --> ", len(features))
     features_0 = features[:16]
@@ -159,8 +150,8 @@ for scale in scales:
             f_gt = f_gt.astype(float)
             f_bi = f_bi.astype(float)
             features_bicubic.append(f_bi)
-            # psnr_bicubic = PSNR(f_gt, f_bi,shave_border=scale)
-            psnr_bicubic = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_bi))
+            psnr_bicubic = PSNR(f_bi, f_gt, shave_border=scale)
+            # psnr_bicubic = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_bi))
             avg_psnr_bicubic += psnr_bicubic
 
             f_input = f_bi/255.
@@ -186,8 +177,8 @@ for scale in scales:
             f_sr[f_sr>255.] = 255.
             f_sr = f_sr[0,:,:]
 
-            # psnr_predicted = PSNR(f_gt, f_sr,shave_border=scale)
-            psnr_predicted = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_sr))
+            psnr_predicted = PSNR(f_sr, f_gt, shave_border=scale)
+            # psnr_predicted = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_sr))
             avg_psnr_predicted += psnr_predicted
             features.append(f_sr)
 
