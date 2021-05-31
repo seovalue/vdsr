@@ -366,6 +366,7 @@ cocoDt=cocoGt.loadRes(resFile)
 # running evaluation
 cocoEval = COCOeval(cocoGt,cocoDt,annType)
 # cocoEval.params.imgIds  = imgIds
+# 맨 윗줄
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()

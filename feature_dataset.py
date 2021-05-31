@@ -36,7 +36,7 @@ class FeatureDataset(Dataset):
         self.lheight = int(self.height / self.rescale_factor)
         print("lr: ({} {}), hr: ({} {})".format(self.lwidth, self.lheight, self.width, self.height))
 
-        self.original_hr_imgs = []
+        self.original_hr_imgs = [] #원본 250개
         print("crop features ...")
         for hr in self.hr_path: # 256개의 피쳐로 나눈다.
             hr_cropped_imgs = []
@@ -50,7 +50,7 @@ class FeatureDataset(Dataset):
                     hr_cropped_imgs.append(crop)
             self.hr_imgs.append(hr_cropped_imgs)
 
-        self.final_results = []
+        self.final_results = [] # [250개]
         print("resize and concat features ...")
         for i in range(0, len(self.hr_imgs)):
             hr_img = self.hr_imgs[i]  
