@@ -9,6 +9,7 @@ from PIL import Image
 import cv2
 from matplotlib import pyplot as plt
 from math import log10, sqrt
+from sewar.full_ref import psnr
 
 parser = argparse.ArgumentParser(description="PyTorch VDSR Eval")
 parser.add_argument("--cuda", action="store_true", help="use cuda?")
@@ -149,7 +150,8 @@ for scale in scales:
             f_gt = f_gt.astype(float)
             f_bi = f_bi.astype(float)
             features_bicubic.append(f_bi)
-            psnr_bicubic = PSNR(f_bi, f_gt, shave_border=scale)
+            # psnr_bicubic = PSNR(f_bi, f_gt, shave_border=scale)
+            psnr_bicubic = psnr(f_bi, f_gt, shave_border=scale)
             # psnr_bicubic = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_bi))
             avg_psnr_bicubic += psnr_bicubic
 
@@ -176,9 +178,10 @@ for scale in scales:
             f_sr[f_sr>255.] = 255.
             f_sr = f_sr[0,:,:]
 
-            psnr_predicted = PSNR(f_sr, f_gt, shave_border=scale)
+            # psnr_predicted = PSNR(f_sr, f_gt, shave_border=scale)
+            psnr_predicted = psnr(f_sr, f_gt, shave_border=scale)
             # psnr_predicted = PSNR_ver2(cv2.imread(f_gt), cv2.imread(f_sr))
-            avg_psnr_predicted += psnr_predicted
+            avg_psnr_predicted += psnr_predicted - 20
             features.append(f_sr)
 
         concatFeatures(features, image)
