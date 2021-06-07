@@ -47,10 +47,10 @@ import argparse
 parser = argparse.ArgumentParser(description="PyTorch CARN")
 parser.add_argument("--data_path", type=str, default = "/home/ubuntu/JH/exp1/dataset")
 parser.add_argument("--valid_data_path", type=str)
-parser.add_argument("--rescale_factor", type=int, default=4, help="rescale factor for using in training")
+parser.add_argument("--rescale_factor", type=int, help="rescale factor for using in training")
+parser.add_argument("--bicubic", type=int, default=0)
 parser.add_argument("--model_name", type=str,choices= ["VDSR", "CARN", "SRRN","FRGAN"], default='CARN', help="Feature type for usingin training")
 parser.add_argument("--loss_type", type=str, choices= ["MSE", "L1", "SmoothL1","vgg_loss","ssim_loss","adv_loss","lpips"], default='MSE', help="loss type in training")
-parser.add_argument("--scale_factor", type=str)
 parser.add_argument('--batch_size', type=int, default=256)
 opt = parser.parse_args()
 print(opt)
@@ -154,9 +154,18 @@ for iter in range(0, 100):
 
   globals()['maxRange_{}'.format(image_file_number)] = maxRange
 
+
+  if opt.bicubic == 1:
+    p2_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p2/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p2' +'.png')
+    p3_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p3/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
+    p4_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p4/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p4' +'.png')
+  else:
+    p2_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p2/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p2' +'.png')
+    p3_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p3/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
+    p4_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p4/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p4' +'.png')
   # p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
   # p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p2_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p2/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p2' +'.png')
+  
   # # y_p2, cb, cr = p2_feature_img.split()
   p2_feature_arr = np.array(p2_feature_img)
   p2_feature_arr_round = myRound(p2_feature_arr)
@@ -164,14 +173,14 @@ for iter in range(0, 100):
   # p3_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p3.png')
 
   # p3_feature_img = Image.open('./result/{}/inference/{}_p3x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p3_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p3/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
+  
   # # y_p3, cb2, cr2 = p3_feature_img.split()
   p3_feature_arr = np.array(p3_feature_img)
   p3_feature_arr_round = myRound(p3_feature_arr)
 
   # p4_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p4.png')
   # p4_feature_img = Image.open('./result/{}/inference/{}_p4x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
-  p4_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p4/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p4' +'.png')
+  
   # y_p4, cb3, cr3 = p4_feature_img.split()
   p4_feature_arr = np.array(p4_feature_img)
   p4_feature_arr_round = myRound(p4_feature_arr)
