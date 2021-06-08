@@ -117,9 +117,7 @@ model = torch.load(opt.model, map_location=lambda storage, loc: storage)["model"
 
 scales = [opt.scaleFactor]
 
-# image_list = glob.glob(opt.dataset+"/*.*") 
 if opt.singleImage == "Y" :
-    # image_list = crop_feature(opt.dataset, opt.featureType, opt.scaleFactor)
     image_list = opt.dataset
 else:
     image_path = os.path.join(opt.dataset, opt.featureType)
@@ -149,7 +147,7 @@ for scale in scales:
             f_gt = f_gt.astype(float)
             f_bi = f_bi.astype(float)
             features_bicubic.append(f_bi)
-            psnr_bicubic = PSNR(f_bi, f_gt, shave_border=scale) - 20
+            psnr_bicubic = PSNR(f_bi, f_gt, shave_border=scale)
             avg_psnr_bicubic += psnr_bicubic
 
             f_input = f_bi/255.
@@ -176,7 +174,7 @@ for scale in scales:
             f_sr = f_sr[0,:,:]
 
             psnr_predicted = PSNR(f_sr, f_gt, shave_border=scale)
-            avg_psnr_predicted += psnr_predicted - 20
+            avg_psnr_predicted += psnr_predicted
             features.append(f_sr)
 
         concatFeatures(features, image)
@@ -185,23 +183,3 @@ for scale in scales:
     print("Dataset=", opt.dataset)
     print("Average PSNR_predicted=", avg_psnr_predicted/count)
     print("Average PSNR_bicubic=", avg_psnr_bicubic/count)
-
-
-# Show graph
-# f_gt = Image.fromarray(f_gt)
-# f_b = Image.fromarray(f_bi)
-# f_sr = Image.fromarray(f_sr)
-
-# fig = plt.figure(figsize=(18, 16), dpi= 80)
-# ax = plt.subplot("131")
-# ax.imshow(f_gt)
-# ax.set_title("GT")
-
-# ax = plt.subplot("132")
-# ax.imshow(f_bi)
-# ax.set_title("Input(bicubic)")
-
-# ax = plt.subplot("133")
-# ax.imshow(f_sr)
-# ax.set_title("Output(vdsr)")
-# plt.show()
