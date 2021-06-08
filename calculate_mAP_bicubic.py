@@ -153,10 +153,10 @@ for iter in range(0, 100):
 
   globals()['maxRange_{}'.format(image_file_number)] = maxRange
 
-  p2_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p2/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p2' +'.png')
-  p3_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p3/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
-  p4_feature_img = Image.open('/content/drive/MyDrive/result/inference_x{}/LR_2/p4/'.format(opt.scale_factor) + image_prefix + '000000' + image_file_number + '_p4' +'.png')
-# p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
+  p2_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p2/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p2' +'.png')
+  p3_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p3/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p3'  +'.png')
+  p4_feature_img = Image.open('/content/drive/MyDrive/result/bicubic_x{}/LR/p4/'.format(opt.rescale_factor) + image_prefix + '000000' + image_file_number + '_p4' +'.png')
+  # p2_feature_img = Image.open('./original/qp32/COCO_val2014_000000'+ image_file_number +'_p2.png'
   # p2_feature_img = Image.open('./result/{}/inference/{}_p2x{}/SR_{}.png'.format(opt.loss_type,opt.model_name,opt.rescale_factor,str(iter)))
   
   # # y_p2, cb, cr = p2_feature_img.split()
