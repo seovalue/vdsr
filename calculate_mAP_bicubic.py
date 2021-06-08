@@ -45,7 +45,6 @@ from pycocotools.mask import encode
 import argparse
 
 parser = argparse.ArgumentParser(description="PyTorch CARN")
-parser.add_argument("--data_path", type=str, default = "/home/ubuntu/JH/exp1/dataset")
 parser.add_argument("--valid_data_path", type=str)
 parser.add_argument("--rescale_factor", type=int, help="rescale factor for using in training")
 parser.add_argument("--model_name", type=str,choices= ["VDSR", "CARN", "SRRN","FRGAN"], default='CARN', help="Feature type for usingin training")
